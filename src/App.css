@@ -23,12 +23,17 @@ body {
   min-height: 100vh;
   background: #fff;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header {
+  width: 100%;
   padding: 2rem;
-  position: relative;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .gallery-title {
@@ -50,33 +55,38 @@ body {
 }
 
 .about-title {
-  font-size: 5rem;
   position: absolute;
   left: 50%;
   top: 40%;
   transform: translate(-50%, -50%);
+  font-size: 5rem;
   opacity: 0.08;
   font-weight: bold;
   letter-spacing: 0.5rem;
   white-space: nowrap;
+  z-index: 1;
 }
 
 .gallery-container {
   width: 100%;
-  min-height: calc(100vh - 150px);
-  height: auto;
+  max-width: 1600px;
+  height: calc(100vh - 150px);
   position: relative;
   margin: 0 auto;
-  padding-bottom: 100px;
+  padding: 0 4rem;
 }
 
 .gallery-item {
   position: absolute;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 300px;
+  width: 280px;
   transform: translateX(-50%);
-  z-index: 1;
+}
+
+.gallery-item:hover {
+  transform: translateX(-50%) scale(1.05);
+  z-index: 10;
 }
 
 .image-wrapper {
@@ -84,6 +94,7 @@ body {
   overflow: hidden;
   margin-bottom: 1rem;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  aspect-ratio: 3/4;
 }
 
 .gallery-image {
@@ -163,13 +174,23 @@ body {
 }
 
 /* 添加响应式布局 */
-@media (max-width: 1200px) {
-  .gallery-item {
-    width: 200px;
+@media (max-width: 1600px) {
+  .gallery-container {
+    max-width: 1400px;
   }
   
-  .about-title {
-    font-size: 4rem;
+  .gallery-item {
+    width: 250px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .gallery-container {
+    max-width: 1000px;
+  }
+  
+  .gallery-item {
+    width: 220px;
   }
 }
 
@@ -184,11 +205,6 @@ body {
     left: 50% !important;
     top: 0 !important;
     margin-bottom: 3rem;
-  }
-  
-  .about-title {
-    font-size: 3rem;
-    position: relative;
-    margin: 2rem 0;
+    width: 280px;
   }
 }
