@@ -73,7 +73,7 @@ body {
   height: calc(100vh - 150px);
   position: relative;
   margin: 0 auto;
-  padding: 0 4rem;
+  padding: 0 6rem;
 }
 
 .gallery-item {
