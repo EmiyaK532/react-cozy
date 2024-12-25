@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# 动漫角色图库 (Anime Character Gallery)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![alt text](src/assets/display/home.png)
 
-Currently, two official plugins are available:
+![alt text](src/assets/display/detail.png)
+这是一个使用 React + TypeScript + Vite 构建的动漫角色展示网站。项目使用了现代的动画效果和响应式设计，为用户提供流畅的浏览体验。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 功能特点
 
-## Expanding the ESLint configuration
+- 响应式图库布局
+- 使用 Framer Motion 实现流畅的动画效果
+- 基于 React Router 的页面导航
+- TypeScript 类型支持
+- 灰度图片效果
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 项目结构
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+src/
+  ├── components/
+  │   ├── Gallery.tsx      # 主图库组件
+  │   └── GalleryDetail.css
+  ├── assets/
+  │   └── react.svg
+  └── public/
+      └── images/
+          ├── 01.jpg
+          ├── 02.jpg
+          └── 03.jpg
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 技术栈
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- React 18
+- TypeScript
+- Vite
+- Framer Motion
+- React Router
+- ESLint
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## 开发指南
+
+### 安装依赖
+
+```bash
+npm install
 ```
+
+### 启动开发服务器
+
+```bash
+npm run dev
+```
+
+### 构建生产版本
+
+```bash
+npm run build
+```
+
+## ESLint 配置
+
+项目使用 ESLint 进行代码质量控制。如需修改配置，请参考 `eslint.config.js`。
+
+## 许可证
+
+MIT
