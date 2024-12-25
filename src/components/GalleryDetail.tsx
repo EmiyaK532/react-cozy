@@ -1,95 +1,91 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import "./GalleryDetail.css";
-import { useState } from "react";
 
 function GalleryDetail() {
-  const { id } = useParams();
   const navigate = useNavigate();
-  const [isLeaving, setIsLeaving] = useState(false);
+  const { id } = useParams();
 
-  const detailData = {
+  const details = {
     white: {
+      number: "01",
       title: "WHITE",
       character: "YUUKI",
-      number: "1",
-      image: "/images/01.jpg",
-      quotes: ["I believe we can see someday again", "white eternity..."],
-    },
-    night: {
-      title: "NIGHT",
-      character: "KURO",
-      number: "2",
-      image: "/images/02.jpg",
-      quotes: [
-        "as the Reincarnation",
-        "That night",
-        "Thale",
-        "Nicht",
-        "der Frühling",
-        "auf",
+      mainQuote: "I believe we can see someday again",
+      subQuotes: [
+        "white eternity...",
+        "The first promise",
+        "Looking forward to spring",
       ],
     },
-    clover: {
-      title: "CLOVER",
-      character: "ANZU",
-      number: "4",
-      image: "/images/03.jpg",
-      quotes: [
-        "それは、恋ぶ想い",
-        "それは、永遠の誓い",
-        "それは、心からの願い",
-        "それは、抱き続けた後悔",
-        "そして、幼い日の約束",
-      ],
-    },
+    // ... 其他详情配置
   };
 
-  const data = detailData[id as keyof typeof detailData];
-
-  const handleClose = () => {
-    setIsLeaving(true);
-    setTimeout(() => {
-      navigate("/");
-    }, 500);
-  };
+  const currentDetail = details[id as keyof typeof details];
 
   return (
     <motion.div
-      className="gallery-detail"
-      initial={{ x: "100%" }}
-      animate={{ x: 0 }}
-      exit={{ x: isLeaving ? "-100%" : "100%" }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      }}
+      className="fixed inset-0 bg-white z-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
-      <button className="close-button" onClick={handleClose}>
-        ×
+      <button
+        onClick={() => navigate(-1)}
+        className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center"
+      >
+        <span className="text-3xl rotate-45">+</span>
       </button>
 
-      <div className="detail-content">
-        <div className="detail-image-container">
-          <div className="number-circle">{data?.number}</div>
-          <img
-            src={data?.image}
-            alt={data?.character}
-            className="detail-image"
-          />
-          <div className="image-tag">{data?.title}</div>
+      <div className="container mx-auto h-full flex items-center justify-center gap-24 px-8">
+        <div className="relative w-[500px]">
+          <div className="relative border-8 border-white shadow-2xl">
+            <img
+              src={`/images/${id}.jpg`}
+              alt={currentDetail?.title}
+              className="w-full"
+            />
+            <motion.div
+              className="absolute -top-6 -right-6 w-16 h-16 bg-black text-white flex items-center justify-center text-xl font-bold"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              {currentDetail?.number}
+            </motion.div>
+          </div>
+          <motion.div
+            className="absolute -bottom-4 left-8 bg-white border-2 border-black px-6 py-2"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            {currentDetail?.title}
+          </motion.div>
         </div>
 
-        <div className="detail-text">
-          <h2 className="detail-character">{data?.character}</h2>
-          <div className="quotes-container">
-            {data?.quotes.map((quote, index) => (
-              <p key={index} className="quote-line">
+        <div className="w-[400px] pt-12">
+          <motion.h2
+            className="text-8xl font-black mb-16 relative"
+            initial={{ x: 50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+          >
+            {currentDetail?.character}
+            <div className="absolute -bottom-4 left-0 w-12 h-1 bg-black" />
+          </motion.h2>
+
+          <div className="space-y-6 pl-6">
+            {currentDetail?.subQuotes.map((quote, index) => (
+              <motion.p
+                key={index}
+                className="text-lg relative pl-6"
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.6 + index * 0.1 }}
+              >
+                <span className="absolute left-0 top-1/2 w-3 h-px bg-black" />
                 {quote}
-              </p>
+              </motion.p>
             ))}
-            <div className="quote-line-decoration">――</div>
           </div>
         </div>
       </div>
