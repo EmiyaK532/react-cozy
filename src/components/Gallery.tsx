@@ -49,16 +49,55 @@ function Gallery() {
 
       <div className="relative z-10 container mx-auto px-8 py-16">
         <motion.div
-          className="mb-16"
+          className="mb-16 relative"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <motion.div className="inline-block bg-black px-6 py-2 -rotate-3">
-            <h1 className="text-white text-2xl font-bold">GALLERY</h1>
+          <motion.div 
+            className="inline-block bg-black px-6 py-2 -rotate-3 relative overflow-hidden group"
+            whileHover={{ rotate: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.h1 
+              className="text-white text-2xl font-bold relative z-10"
+              whileHover={{ scale: 1.05 }}
+            >
+              GALLERY
+            </motion.h1>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ mixBlendMode: 'overlay' }}
+            />
           </motion.div>
-          <p className="mt-4 text-sm text-gray-600">
-            Shiraha Nanami, a galgame lover.
-          </p>
+
+          <div className="mt-6 relative">
+            <motion.p 
+              className="font-serif text-lg tracking-wide relative inline-block"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 font-medium">
+                HoWhite
+              </span>
+              <span className="mx-2 opacity-50">/</span>
+              <motion.span 
+                className="italic opacity-75"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.75 }}
+                transition={{ delay: 0.4 }}
+              >
+                a developer
+              </motion.span>
+            </motion.p>
+            
+            <motion.div
+              className="absolute -bottom-2 left-0 h-px w-0 bg-gradient-to-r from-purple-600 to-pink-600"
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+            />
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
