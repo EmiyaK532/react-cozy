@@ -35,6 +35,14 @@ export default {
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
       },
+      rotate: {
+        '12': '12deg',
+        '45': '45deg',
+      },
+      spacing: {
+        '1/3': '33.333333%',
+        '1/4': '25%',
+      },
     },
   },
   plugins: [],
