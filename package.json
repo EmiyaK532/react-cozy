@@ -10,10 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^9.120.4",
+    "@react-three/fiber": "^8.17.10",
+    "@studio-freight/lenis": "^1.0.42",
+    "@types/three": "^0.171.0",
     "framer-motion": "^11.15.0",
+    "gsap": "^3.12.5",
+    "maath": "^0.10.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.1.1"
+    "react-router-dom": "^7.1.1",
+    "react-use-measure": "^2.1.1",
+    "sass": "^1.83.0",
+    "three": "^0.171.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

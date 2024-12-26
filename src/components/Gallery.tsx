@@ -1,8 +1,15 @@
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import ImageCard from "./ImageCard";
+import { useRef } from "react";
 
 function Gallery() {
-  const navigate = useNavigate();
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
   const items = [
     {
@@ -31,105 +38,34 @@ function Gallery() {
     },
   ];
 
-  const decorativeItems = [
-    { text: "APPLE", top: "75%", left: "25%" },
-    { text: "SUNFLOWER", top: "85%", left: "45%" },
-    { text: "STAR", top: "80%", left: "65%" },
-    { text: "MARE", top: "70%", left: "85%" },
-    { text: "EMOTION", top: "35%", right: "15%" },
-    { text: "THERAPY", top: "55%", left: "55%" },
-  ];
-
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden">
-      {/* Header */}
+    <div ref={containerRef} className="relative min-h-screen bg-transparent">
       <motion.div
-        className="relative z-10 px-8 pt-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        className="fixed top-0 left-0 w-full h-screen pointer-events-none"
+        style={{ y }}
       >
-        <motion.div
-          className="inline-block bg-black px-6 py-2 -rotate-3"
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-white text-2xl font-bold">GALLERY</h1>
-        </motion.div>
-        <p className="mt-4 text-sm text-gray-600">
-          Shiraha Nanami, a galgame lover.
-        </p>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.02)_0,rgba(0,0,0,0.01)_100%)]" />
       </motion.div>
 
-      {/* Central ABOUT text */}
-      <motion.h2
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[12vw] font-black tracking-wider opacity-5 pointer-events-none whitespace-nowrap"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.05 }}
-        transition={{ duration: 1, delay: 0.3 }}
-      >
-        ABOUT
-      </motion.h2>
-
-      {/* Main Content */}
-      <div className="relative w-full h-[85vh] px-[5vw]">
-        {items.map((item, index) => (
-          <motion.div
-            key={item.id}
-            className="absolute w-[25vw] min-w-[280px] max-w-[400px]"
-            style={{
-              left: `${25 + index * 25}%`,
-              top: `${20 + (index % 2) * 10}%`,
-            }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-          >
-            <div className="relative mb-4 aspect-[3/4] overflow-hidden">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-              />
-              <motion.div
-                className="absolute -bottom-3 left-4 bg-white border-2 border-black px-4 py-1"
-                whileHover={{ y: -2 }}
-              >
-                {item.title}
-              </motion.div>
-            </div>
-            <div className="space-y-3 pl-4 border-l-2 border-gray-200">
-              <p className="text-xs uppercase tracking-wider">
-                {item.character}
-              </p>
-              <p className="text-sm italic">"{item.quote}"</p>
-              <p className="text-xs text-gray-500">{item.subQuote}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Decorative Elements */}
-      {decorativeItems.map((item, index) => (
+      <div className="relative z-10 container mx-auto px-8 py-16">
         <motion.div
-          key={index}
-          className="absolute"
-          style={{ ...item }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+          className="mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
         >
-          <div className="border border-black px-3 py-1 text-xs bg-white whitespace-nowrap">
-            {item.text}
-          </div>
-          <div className="mt-1 w-12 h-8 bg-[repeating-linear-gradient(45deg,#f0f0f0,#f0f0f0_2px,transparent_2px,transparent_4px)]" />
+          <motion.div className="inline-block bg-black px-6 py-2 -rotate-3">
+            <h1 className="text-white text-2xl font-bold">GALLERY</h1>
+          </motion.div>
+          <p className="mt-4 text-sm text-gray-600">
+            Shiraha Nanami, a galgame lover.
+          </p>
         </motion.div>
-      ))}
 
-      {/* Background Pattern */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,#fafafa,#fafafa_1px,transparent_1px,transparent_6px)] opacity-30" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {items.map((item, index) => (
+            <ImageCard key={item.id} {...item} index={index} />
+          ))}
+        </div>
       </div>
     </div>
   );
