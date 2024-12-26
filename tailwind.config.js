@@ -43,6 +43,12 @@ export default {
         '1/3': '33.333333%',
         '1/4': '25%',
       },
+      writing: {
+        'vertical': 'vertical-rl'
+      },
+      textShadow: {
+        'glow': '0 0 8px rgba(0,0,0,0.5)'
+      }
     },
   },
   plugins: [],
