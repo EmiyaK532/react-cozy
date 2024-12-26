@@ -1,14 +1,21 @@
 import { Canvas } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
-import { Color } from "three";
+import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
-import * as random from "maath/random";
 
 function Stars() {
   const ref = useRef<any>();
+  
+  // 修改星星的生成方式，确保不会产生 NaN 值
   const stars = useMemo(() => {
-    return new Float32Array(5000).fill(0).map(() => (Math.random() - 0.5) * 50);
+    const positions = new Float32Array(5000 * 3);
+    for (let i = 0; i < 5000; i++) {
+      const i3 = i * 3;
+      positions[i3] = (Math.random() - 0.5) * 50;
+      positions[i3 + 1] = (Math.random() - 0.5) * 50;
+      positions[i3 + 2] = (Math.random() - 0.5) * 50;
+    }
+    return positions;
   }, []);
 
   useFrame((state, delta) => {
