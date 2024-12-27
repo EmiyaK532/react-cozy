@@ -24,7 +24,7 @@ function GalleryDetail() {
       id: "white",
       number: "01",
       title: "WHITE",
-      character: "YUUKI",
+      character: "HOWHITE",
       mainQuote: "I believe we can see someday again",
       subQuotes: [
         "white eternity...",

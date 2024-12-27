@@ -20,6 +20,7 @@ export default {
       },
       backgroundImage: {
         'stripe-pattern': 'repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 2px, transparent 2px, transparent 8px)',
+        'gradient-text': 'linear-gradient(45deg, #333, #999)',
       },
       animation: {
         "fade-in": "fade-in 0.5s ease-in-out forwards",
@@ -48,7 +49,19 @@ export default {
       },
       textShadow: {
         'glow': '0 0 8px rgba(0,0,0,0.5)'
-      }
+      },
+      letterSpacing: {
+        'widest-2x': '0.25em',
+        'widest-3x': '0.5em',
+      },
+      opacity: {
+        '15': '0.15',
+        '85': '0.85',
+      },
+      skew: {
+        '12': '12deg',
+        '24': '24deg',
+      },
     },
   },
   plugins: [],
