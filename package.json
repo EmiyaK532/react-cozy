@@ -23,7 +23,6 @@
     "react-router-dom": "^7.1.1",
     "react-use-measure": "^2.1.1",
     "sass": "^1.83.0",
-    "split-type": "^0.3.4",
     "three": "^0.171.0"
   },
   "devDependencies": {
