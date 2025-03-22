@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.8.2",
     "@gsap/react": "^2.1.1",
     "@react-three/drei": "^9.120.4",
     "@react-three/fiber": "^8.17.10",

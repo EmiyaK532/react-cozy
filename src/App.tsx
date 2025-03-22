@@ -19,26 +19,39 @@ function App() {
   useEffect(() => {
     // 优化Lenis初始化
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // 降低滚动持续时间，减少延迟感
+      duration: 0.6,
+      // 使用更平滑的曲线
+      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       smoothWheel: true,
-      // 仅使用有效的Lenis选项
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.0,
+      // 增大滚轮乘数，让滚动更响应
+      wheelMultiplier: 1.3,
+      // 增大触摸乘数，对移动端更友好
+      touchMultiplier: 1.5,
+      // 保持触摸同步
       syncTouch: true,
     });
 
     // 使用更高效的RAF循环
     let rafId: number;
+    let lastTime = 0;
 
     function raf(time: number) {
-      lenis.raf(time);
+      if (time - lastTime > 16) {
+        // 约60fps，减少不必要的更新
+        lenis.raf(time);
+        lastTime = time;
+      }
       rafId = requestAnimationFrame(raf);
     }
 
     // 启动RAF循环
     rafId = requestAnimationFrame(raf);
+
+    // 修复滚动目标问题
+    document.documentElement.setAttribute("data-lenis-prevent", "");
+    document.body.removeAttribute("data-lenis-prevent");
 
     // 清理函数
     return () => {

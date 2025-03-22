@@ -2,9 +2,171 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 可选：添加一些全局样式 */
+/* 基础样式和性能优化 */
 @layer base {
+  html {
+    /* 使用css滚动和Lenis可能会冲突，移除这个属性 */
+    /* scroll-behavior: smooth; */
+  }
+
   body {
     @apply antialiased;
+    overflow-x: hidden;
+    /* 添加硬件加速 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* 减少内容变换时的重绘 */
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    /* 消除滚动延迟 */
+    -webkit-overflow-scrolling: touch;
   }
+
+  /* 优化滚动性能 */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  /* 使用transform而不是top/left以获得更好的性能 */
+  .transform-gpu {
+    transform: translateZ(0);
+  }
+
+  /* 减少闪烁和重绘 */
+  .hardware-accelerated {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* 添加渐变文本效果 */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, #333, #666);
+  }
+
+  /* 添加交互动画效果 */
+  .hover-lift {
+    transition: transform 0.2s ease-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-5px);
+  }
+
+  /* 在滚动时添加图像视差效果 */
+  .parallax-scroll {
+    transform: translateZ(0);
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* 卡片悬停效果 */
+  .card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform, box-shadow;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 平滑动画和过渡 */
+  .smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 丝滑滚动 - 使用Lenis代替，这个类重复了 */
+  /* .scroll-smooth {
+    scroll-behavior: smooth;
+  } */
+}
+
+/* 添加一些漂亮的动画关键帧 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+/* 添加滚动指示器动画 */
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.scroll-indicator {
+  animation: bounce 2s infinite;
+}
+
+/* 优化自定义滚动条样式，减少重绘 */
+::-webkit-scrollbar {
+  width: 6px; /* 减小滚动条宽度 */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* 使轨道透明减少重绘 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2); /* 使用半透明颜色减少对比度 */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }
