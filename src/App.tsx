@@ -6,7 +6,7 @@ import Background from "./components/Background";
 
 // 使用React.lazy懒加载组件
 const Gallery = lazy(() => import("./components/Gallery"));
-const GalleryDetail = lazy(() => import("./components/GalleryDetail"));
+const GalleryDetail = lazy(() => import("./components/gallery/detail"));
 
 // 加载指示器组件
 const LoadingIndicator = () => (
