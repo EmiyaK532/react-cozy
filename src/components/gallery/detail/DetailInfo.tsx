@@ -1,5 +1,5 @@
 import React, { RefObject, MutableRefObject } from "react";
-import { DetailData } from "../../../types/gallery.types";
+import { DetailData } from "@/types/gallery.types";
 
 interface DetailInfoProps {
   detail: DetailData;

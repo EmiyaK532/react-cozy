@@ -2,6 +2,13 @@ import { motion } from "framer-motion";
 import ImageCard from "./ImageCard";
 import { useRef, useCallback, useEffect, useState, useMemo } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import {
+  GalleryElement,
+  getAllElements,
+  addImageToColumn,
+  galleryColumns,
+  GalleryImage,
+} from "../data/galleryElements";
 
 // 滚动触发动画辅助钩子 - 优化性能
 function useScrollInView(threshold = 0.1, rootMargin = "0px") {
@@ -35,7 +42,45 @@ function useScrollInView(threshold = 0.1, rootMargin = "0px") {
   return { ref, isInView };
 }
 
+// 模拟图片数据 - 实际使用时可以替换为真实的数据
+const sampleImages = [
+  {
+    title: "DREAMS",
+    character: "character4",
+    quote: "Our times made of dreams and colors",
+    subQuote: "Colorful moments that last forever",
+    image: "/images/01.jpg", // 实际使用时替换为新图片
+  },
+  {
+    title: "MEMORY",
+    character: "character5",
+    quote: "The fragments of our journey",
+    subQuote: "Scattered pieces of shared moments",
+    image: "/images/02.jpg", // 实际使用时替换为新图片
+  },
+  {
+    title: "SILENCE",
+    character: "character6",
+    quote: "When words can't express feelings",
+    subQuote: "The quiet moments speak the loudest",
+    image: "/images/03.jpg", // 实际使用时替换为新图片
+  },
+];
+
 function Gallery() {
+  // 状态用于跟踪画廊元素
+  const [galleryItems, setGalleryItems] = useState<GalleryElement[]>(() =>
+    getAllElements()
+  );
+
+  // 控制添加界面的显示状态
+  const [showAddInterface, setShowAddInterface] = useState(false);
+
+  // 当前选中的列
+  const [selectedColumn, setSelectedColumn] = useState<
+    "left" | "middle" | "right"
+  >("left");
+
   // 添加自动动画引用 - 优化自动动画配置
   const [parentRef] = useAutoAnimate({
     duration: 250, // 减少动画持续时间
@@ -47,133 +92,28 @@ function Gallery() {
   const titleAnimation = useScrollInView(0.05, "-50px");
   const subtitleAnimation = useScrollInView(0.05, "-50px");
 
-  // 使用useMemo缓存elements数组，避免重新渲染时重新创建
-  const elements = useMemo(
-    () => [
-      // 第一列元素
-      {
-        type: "image",
-        data: {
-          id: "white",
-          title: "WHITE",
-          character: "yuuki",
-          quote: "I believe we can see someday again",
-          subQuote: "white eternity...",
-          image: "/images/01.jpg",
-        },
-        style: "left-[10%] top-[15%]",
-      },
-      {
-        type: "text",
-        text: "Hello",
-        style: `
-        left-[5%] top-[5%] 
-        text-5xl font-black 
-        tracking-[0.2em]
-        -rotate-12
-        bg-clip-text text-transparent 
-        bg-gradient-to-r from-gray-800 to-gray-400
-        drop-shadow-[2px_2px_0px_rgba(0,0,0,0.3)]
-        border-b-[3px] border-gray-300
-        px-4 py-2
-        transition-all duration-300
-      `,
-        className:
-          "hover:-translate-y-1 hover:scale-110 hover:border-transparent",
-      },
+  // 添加新图片到画廊
+  const addImageToGallery = useCallback(
+    (imageData: Omit<GalleryImage, "id">) => {
+      const newElement = addImageToColumn(selectedColumn, imageData);
 
-      // 第二列元素
-      {
-        type: "image",
-        data: {
-          id: "butterfly",
-          title: "BUTTERFLY",
-          character: "shiraha",
-          quote: "Before the Blue",
-          subQuote: "The end of the story promise",
-          image: "/images/02.jpg",
-        },
-        style: "left-[40%] top-[25%]",
-      },
-      {
-        type: "text",
-        text: "SUNFLOWER",
-        style:
-          "left-[35%] top-[65%] border border-black px-3 py-1 text-xl transition-all duration-300",
-        className: "hover:bg-black hover:text-white hover:shadow-lg",
-      },
+      // 更新galleryColumns数据结构
+      galleryColumns[`${selectedColumn}Column`].push(newElement);
 
-      // 第三列元素
-      {
-        type: "image",
-        data: {
-          id: "letter",
-          title: "LETTER",
-          character: "sena",
-          quote: "Our first promise and your words I wanted to express",
-          subQuote: "und Im Thale blüht der Frühling auf",
-          image: "/images/03.jpg",
-        },
-        style: "left-[70%] top-[20%]",
-      },
-      {
-        type: "text",
-        text: "EMOTION",
-        style:
-          "right-[5%] top-[15%] border-2 border-black px-4 py-2 text-xl transition-all duration-300",
-        className: "hover:border-transparent hover:bg-black hover:text-white",
-      },
-      {
-        type: "text",
-        text: "KUKURI",
-        style:
-          "left-[8%] bottom-[15%] -rotate-90 text-2xl font-bold writing-vertical transition-all duration-300",
-        className: "hover:rotate-0 hover:-translate-y-2",
-      },
-      {
-        type: "text",
-        text: "SENA",
-        style:
-          "right-[30%] top-[40%] text-xl font-light tracking-[1em] opacity-20 transition-all duration-300",
-        className: "hover:opacity-80 hover:tracking-[1.5em]",
-      },
-      {
-        type: "text",
-        text: "PROMISE",
-        style:
-          "left-[25%] top-[60%] text-3xl font-black mix-blend-difference transition-all duration-300",
-        className: "hover:scale-110 hover:text-white",
-      },
-      {
-        type: "decorative",
-        element: "line",
-        style:
-          "left-[15%] top-[30%] w-[2px] h-[100px] bg-black/10 -rotate-45 transition-all duration-300",
-        className: "hover:h-[150px] hover:bg-black/30",
-      },
-      {
-        type: "text",
-        text: "YUUKI",
-        style:
-          "right-[15%] bottom-[35%] text-2xl font-bold skew-y-12 transition-all duration-300",
-        className: "hover:skew-y-0 hover:-translate-y-2",
-      },
-      {
-        type: "text",
-        text: "HoWhite",
-        style:
-          "left-[40%] bottom-[25%] text-xl tracking-widest opacity-30 transition-all duration-500",
-        className: "hover:opacity-100 hover:scale-110 hover:-translate-y-2",
-      },
-      {
-        type: "decorative",
-        element: "circle",
-        style:
-          "right-[45%] top-[15%] w-16 h-16 border border-black/20 rounded-full transition-all duration-500",
-        className: "hover:scale-125 hover:border-black/50 hover:rotate-180",
-      },
-    ],
-    []
+      // 更新状态以触发重新渲染
+      setGalleryItems(getAllElements());
+    },
+    [selectedColumn]
+  );
+
+  // 添加示例图片
+  const addSampleImage = useCallback(
+    (index: number) => {
+      if (index >= 0 && index < sampleImages.length) {
+        addImageToGallery(sampleImages[index]);
+      }
+    },
+    [addImageToGallery]
   );
 
   // 高效的元素渲染函数组件 - 使用函数组件减少重复渲染
@@ -197,32 +137,35 @@ function Gallery() {
   );
 
   // 优化元素渲染 - 减少位移动画的幅度和持续时间
-  const renderElement = useCallback((element: any, index: number) => {
-    return (
-      <motion.div
-        key={index}
-        className={`absolute ${element.style}`}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.6,
-          delay: Math.min(index * 0.04, 0.8), // 减少最大延迟时间
-        }}
-      >
-        {element.type === "image" ? (
-          <div className="w-[25vw] min-w-[280px] max-w-[400px]">
-            <ImageCard {...element.data} index={index} />
-          </div>
-        ) : element.type === "text" || element.type === "shape" ? (
-          <DecorativeText {...element} />
-        ) : element.type === "decorative" && element.element === "line" ? (
-          <DecorativeLine {...element} />
-        ) : element.type === "decorative" && element.element === "circle" ? (
-          <DecorativeCircle {...element} />
-        ) : null}
-      </motion.div>
-    );
-  }, []);
+  const renderElement = useCallback(
+    (element: GalleryElement, index: number) => {
+      return (
+        <motion.div
+          key={`element-${index}-${element.type}-${element.type === "image" ? element.data.id : ""}`}
+          className={`absolute ${element.style}`}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.6,
+            delay: Math.min(index * 0.04, 0.8), // 减少最大延迟时间
+          }}
+        >
+          {element.type === "image" ? (
+            <div className="w-[25vw] min-w-[280px] max-w-[400px]">
+              <ImageCard {...element.data} index={index} />
+            </div>
+          ) : element.type === "text" ? (
+            <DecorativeText {...element} />
+          ) : element.type === "decorative" && element.element === "line" ? (
+            <DecorativeLine {...element} />
+          ) : element.type === "decorative" && element.element === "circle" ? (
+            <DecorativeCircle {...element} />
+          ) : null}
+        </motion.div>
+      );
+    },
+    []
+  );
 
   return (
     // 添加touch-manipulation类优化触摸滚动
@@ -328,6 +271,76 @@ function Gallery() {
         </motion.div>
       </div>
 
+      {/* 添加图片按钮 */}
+      <div className="fixed right-8 bottom-8 z-30">
+        <button
+          onClick={() => setShowAddInterface(!showAddInterface)}
+          className="bg-black text-white p-4 rounded-full shadow-lg hover:bg-gray-800 transition-colors duration-300"
+        >
+          {showAddInterface ? "X" : "+"}
+        </button>
+      </div>
+
+      {/* 添加图片界面 */}
+      {showAddInterface && (
+        <div className="fixed left-0 bottom-0 w-full bg-white shadow-lg z-20 p-4 border-t border-gray-200 transition-all duration-300">
+          <div className="container mx-auto">
+            <h3 className="text-xl font-bold mb-4">添加新图片</h3>
+
+            <div className="flex flex-wrap items-center gap-4 mb-4">
+              <div className="flex items-center">
+                <span className="mr-2">选择列:</span>
+                <select
+                  value={selectedColumn}
+                  onChange={(e) =>
+                    setSelectedColumn(
+                      e.target.value as "left" | "middle" | "right"
+                    )
+                  }
+                  className="border border-gray-300 rounded px-2 py-1"
+                >
+                  <option value="left">左列</option>
+                  <option value="middle">中列</option>
+                  <option value="right">右列</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              {sampleImages.map((image, idx) => (
+                <div
+                  key={`sample-${idx}`}
+                  className="border border-gray-200 p-3 rounded-lg hover:shadow-md transition-shadow duration-300 cursor-pointer"
+                  onClick={() => addSampleImage(idx)}
+                >
+                  <h4 className="font-bold">{image.title}</h4>
+                  <p className="text-sm text-gray-600 truncate">
+                    {image.quote}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1 italic truncate">
+                    {image.subQuote}
+                  </p>
+                  <div className="mt-2 text-right">
+                    <button className="text-sm bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition-colors duration-300">
+                      添加到{" "}
+                      {selectedColumn === "left"
+                        ? "左列"
+                        : selectedColumn === "middle"
+                          ? "中列"
+                          : "右列"}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-sm text-gray-500 italic">
+              注意：这是一个演示界面，实际应用中您可以添加图片上传功能和更多自定义选项。
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* 内容区域分隔 */}
       <div className="h-auto" />
 
@@ -336,7 +349,7 @@ function Gallery() {
         ref={parentRef}
         className="relative w-full h-[150vh] hardware-accelerated"
       >
-        {elements.map(renderElement)}
+        {galleryItems.map(renderElement)}
       </div>
     </div>
   );

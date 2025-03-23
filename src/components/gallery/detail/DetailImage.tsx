@@ -1,5 +1,5 @@
 import React, { RefObject } from "react";
-import { DetailData } from "../../../types/gallery.types";
+import { DetailData } from "@/types/gallery.types";
 
 interface DetailImageProps {
   detail: DetailData;

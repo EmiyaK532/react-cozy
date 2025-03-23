@@ -1,4 +1,4 @@
-import { DetailData } from "../../../types/gallery.types";
+import { DetailData } from "@/types/gallery.types";
 
 /**
  * 画廊详情静态数据
